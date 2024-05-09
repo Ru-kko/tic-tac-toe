@@ -2,15 +2,12 @@ package com.tictactoe.tictactoe
 
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class Manger @Inject constructor(private val gameBoard: Game) {
-
-    private val winnerFlow: MutableStateFlow<States> = MutableStateFlow(States.Void)
-
-    private val boardFlow: Flow<Array<Array<States>>> = callbackFlow {
+    private val boardFlow: Flow<Board> = callbackFlow {
         val subscription = gameBoard.subscribe { board ->
             trySend(board)
         }
@@ -19,12 +16,16 @@ class Manger @Inject constructor(private val gameBoard: Game) {
             gameBoard.unSubscribe(subscription)
         }
     }
-            
 
-    fun getGame(): Flow<Array<Array<States>>> = boardFlow
-    fun winner(): Flow<States> = winnerFlow
+    fun getGame() = boardFlow.map { b -> b.cells.copyOf() }
+    fun winner(): Flow<WinnerState> = boardFlow.map { b -> WinnerState(b.isFull, b.winner)}
 
     fun retry() {
         gameBoard.reset()
     }
+    fun play(x: Int, y:Int) {
+        gameBoard.playX(x, y)
+    }
+
+    data class WinnerState(val isFull: Boolean, val winner: States)
 }

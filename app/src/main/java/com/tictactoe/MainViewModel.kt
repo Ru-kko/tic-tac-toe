@@ -2,6 +2,7 @@ package com.tictactoe
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tictactoe.tictactoe.Board
 import com.tictactoe.tictactoe.Game
 import com.tictactoe.tictactoe.Manger
 import com.tictactoe.tictactoe.States
@@ -33,18 +34,24 @@ class MainViewModel @Inject constructor(
     val board = game.getGame().stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
-        Game.getVoidBoard()
+        Board.getVoidBoard()
     )
 
     val winner = game.winner().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = States.Void
+        viewModelScope,
+        SharingStarted.Eagerly,
+        Manger.WinnerState(false, States.Void)
     )
 
     fun retry() {
         viewModelScope.launch {
             game.retry()
+        }
+    }
+
+    fun play(x: Int, y:Int) {
+        viewModelScope.launch {
+            game.play(x, y)
         }
     }
 }

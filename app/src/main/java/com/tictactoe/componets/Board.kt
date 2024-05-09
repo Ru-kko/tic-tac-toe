@@ -1,10 +1,7 @@
 package com.tictactoe.componets
 
-
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,29 +10,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import com.tictactoe.MainViewModel
 import androidx.compose.runtime.getValue
+import com.tictactoe.MainViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.tictactoe.R
-import com.tictactoe.tictactoe.States
 import com.tictactoe.ui.theme.Catppuccin
 
 @Composable
-fun Board(viewModel: MainViewModel, theme: Catppuccin) {
-    val board = viewModel.board.collectAsState()
-
-    Log.i("comp", board.value[0][0].toString())
+fun Board(viewModel: MainViewModel, theme: Catppuccin, enabled: Boolean = true) {
+    val board by viewModel.board.collectAsState()
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -45,7 +31,7 @@ fun Board(viewModel: MainViewModel, theme: Catppuccin) {
             .padding(20.dp)
             .background(theme.Surface2, shape = RoundedCornerShape(6))
     ) {
-        board.value.forEachIndexed { y, it ->
+        board.forEachIndexed { y, it ->
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
@@ -54,48 +40,16 @@ fun Board(viewModel: MainViewModel, theme: Catppuccin) {
                     .padding(PaddingValues(0.dp, 5.dp))
             ) {
                 it.forEachIndexed { x, st ->
-                    if (st == States.Void) {
-                        Button(
-                            onClick = { Log.i("btn", "click")}, modifier = Modifier
-                                .weight(1f)
-                                .fillMaxSize()
-                                .padding(PaddingValues(5.dp, 0.dp))
-                                .background(theme.Mantle, shape = getRoundedCorners(x, y))
-                                .clip(getRoundedCorners(x, y))
-                                .alpha(0f)
-                        ) {}
-                    } else {
-                        Box(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxSize()
-                                .padding(PaddingValues(5.dp, 0.dp))
-                                .background(theme.Mantle, shape = getRoundedCorners(x, y))
-                                .clip(getRoundedCorners(x, y))
-                        ) {
-                            if (st == States.AI) {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.player_o),
-                                    contentDescription = "Player o",
-                                    tint = theme.Peach,
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(10.dp)
-                                        .background(Color.Transparent)
-                                )
-                            } else if (st == States.USER) {
-                                Icon(
-                                    imageVector = ImageVector.vectorResource(R.drawable.player_x),
-                                    contentDescription = "Player x",
-                                    tint = theme.Red,
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .padding(10.dp)
-                                        .background(Color.Transparent)
-                                )
-                            }
-                        }
-                    }
+                    BoardCell(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize()
+                            .padding(PaddingValues(5.dp, 0.dp))
+                            .background(theme.Mantle, getRoundedCorners(x, y)),
+                        state = st,
+                        onClick = { if (enabled) viewModel.play(x, y) },
+                        theme = theme
+                    )
                 }
             }
         }

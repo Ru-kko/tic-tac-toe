@@ -34,7 +34,7 @@ object SettingsModule {
 
     @Singleton
     @Provides
-    fun provideGame(): Game = GameImpl(Game.getVoidBoard())
+    fun provideGame(): Game = GameImpl()
 
     @Singleton
     @Provides
