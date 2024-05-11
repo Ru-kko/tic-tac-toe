@@ -13,7 +13,7 @@ public class GameImpl implements Game {
     final private Map<UUID, EventListener<Board>> listeners;
 
     public GameImpl() {
-        this.board = new Board();
+        this.board = new BoardImpl();
         listeners = new HashMap<>();
     }
 
@@ -25,7 +25,7 @@ public class GameImpl implements Game {
 
     @Override
     public void reset() {
-        this.board = new Board();
+        this.board = new BoardImpl();
         this.emit();
     }
 

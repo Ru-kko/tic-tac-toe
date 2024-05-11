@@ -3,7 +3,6 @@ package com.tictactoe
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tictactoe.tictactoe.Board
-import com.tictactoe.tictactoe.Game
 import com.tictactoe.tictactoe.Manger
 import com.tictactoe.tictactoe.States
 import com.tictactoe.ui.theme.shcemes.Latte
