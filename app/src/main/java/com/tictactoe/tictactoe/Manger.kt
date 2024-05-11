@@ -17,8 +17,8 @@ class Manger @Inject constructor(private val gameBoard: Game) {
         }
     }
 
-    fun getGame() = boardFlow.map { b -> b.cells.copyOf() }
-    fun winner(): Flow<WinnerState> = boardFlow.map { b -> WinnerState(b.isFull, b.winner)}
+    fun getGame() = boardFlow.map { b -> b.cells }
+    fun winner(): Flow<WinnerState> = boardFlow.map { b -> WinnerState(b.isFull, b.winner, b.turn)}
 
     fun retry() {
         gameBoard.reset()
@@ -27,5 +27,5 @@ class Manger @Inject constructor(private val gameBoard: Game) {
         gameBoard.playX(x, y)
     }
 
-    data class WinnerState(val isFull: Boolean, val winner: States)
+    data class WinnerState(val isFull: Boolean, val winner: States, val turn: States)
 }

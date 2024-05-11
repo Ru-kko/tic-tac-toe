@@ -32,6 +32,7 @@ public class GameImpl implements Game {
     @Override
     public void playX(Integer x, Integer y) {
         if (board.play(x, y)) { // * check if was a successful moviment
+            this.board = board.deepCopy();
             // TODO make AI movement
             this.emit();
         }

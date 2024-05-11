@@ -23,7 +23,7 @@ import com.tictactoe.ui.theme.TicTacToeTheme
 @Composable
 fun AppLayout(viewModel: MainViewModel) {
     val theme by viewModel.selectedTheme.collectAsState()
-    val winnerState by  viewModel.winner.collectAsState()
+    val winnerState by viewModel.winner.collectAsState()
 
     val enableBoard = !winnerState.isFull && winnerState.winner == States.Void
 
@@ -52,7 +52,7 @@ fun AppLayout(viewModel: MainViewModel) {
                     color = theme.Text,
                     modifier = Modifier.padding(p)
                 )
-
+                CurrentTurn(viewModel = viewModel, theme = theme)
                 Board(viewModel, theme, enableBoard)
                 Row(horizontalArrangement = Arrangement.spacedBy(20.dp)) {
                     ThemeSwitch(viewModel)

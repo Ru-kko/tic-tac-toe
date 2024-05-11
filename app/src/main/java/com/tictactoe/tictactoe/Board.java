@@ -15,6 +15,8 @@ public interface Board {
      */
     Boolean isFull();
 
+    States getTurn();
+
     Board deepCopy();
 
     static States[][] getVoidBoard() {

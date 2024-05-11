@@ -117,6 +117,11 @@ public class BoardImpl implements Board {
     }
 
     @Override
+    public States getTurn() {
+        return this.turn;
+    }
+
+    @Override
     public Board deepCopy() {
         States[][] copiedCellData = new States[3][3];
         for (int i = 0; i < cellData.length; i++) {
