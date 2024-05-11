@@ -39,7 +39,7 @@ class MainViewModel @Inject constructor(
     val winner = game.winner().stateIn(
         viewModelScope,
         SharingStarted.Eagerly,
-        Manger.WinnerState(false, States.Void)
+        Manger.WinnerState(false, States.Void, States.USER)
     )
 
     fun retry() {
