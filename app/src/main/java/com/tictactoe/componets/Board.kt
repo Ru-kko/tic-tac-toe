@@ -17,11 +17,14 @@ import com.tictactoe.MainViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.tictactoe.tictactoe.States
 import com.tictactoe.ui.theme.Catppuccin
 
 @Composable
 fun Board(viewModel: MainViewModel, theme: Catppuccin, enabled: Boolean = true) {
     val board by viewModel.board.collectAsState()
+    val winner by viewModel.winner.collectAsState()
+
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -47,7 +50,7 @@ fun Board(viewModel: MainViewModel, theme: Catppuccin, enabled: Boolean = true) 
                             .padding(PaddingValues(5.dp, 0.dp))
                             .background(theme.Mantle, getRoundedCorners(x, y)),
                         state = st,
-                        onClick = { if (enabled) viewModel.play(x, y) },
+                        onClick = { if (enabled && winner.turn == States.USER) viewModel.play(x, y) },
                         theme = theme
                     )
                 }

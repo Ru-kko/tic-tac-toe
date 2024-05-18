@@ -33,7 +33,8 @@ public class GameImpl implements Game {
     public void playX(Integer x, Integer y) {
         if (board.play(x, y)) { // * check if was a successful moviment
             this.board = board.deepCopy();
-            // TODO make AI movement
+            this.emit();
+            this.board = AI.getBestMove(this.board);
             this.emit();
         }
     }
